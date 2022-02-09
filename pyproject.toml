@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "semi_guided_speech"
+version = "0.1.0"
+description = "Code withholding the data-analysis part for the semi-guided-speech paper"
+authors = ["jonas <jonvdrdo.vanderdonckt@ugent.be>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.10"
+pandas = "^1.4.0"
+numpy = "^1.22.2"
+pyfunctional = "^1.4.3"
+seaborn = "^0.11.2"
+speechbrain = "^0.5.11"
+pyarrow = "^7.0.0"
+opensmile = "^2.4.1"
+fastparquet = "^0.8.0"  # opensmile outputs duration -> pyarrow does not serialize this
+scikit-learn = "^1.0.2"
+librosa = "^0.9.0"
+tsflex = "^0.2.3"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+jedi-language-server = "^0.35.1"
+isort = "^5.10.1"
+memory-profiler = "^0.60.0"
+ipython = "^8.0.1"
+ipykernel = "^6.9.0"
+ipywidgets = "^7.6.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
