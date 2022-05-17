@@ -70,3 +70,77 @@ labels <- list(Picture_105 = "P_105", Picture_82 = "P_82", Picture_118 = "P_118"
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, sig = .05)
 # Standardized and with significance levels
 lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE, stars = "latent")
+
+
+###### Other stuff
+library(car)
+piscesDataClean = piscesData[c("ID", "pic_name","valence")] # Get long data again
+
+min(piscesDataClean$valence, na.rm=TRUE)
+max(piscesDataClean$valence, na.rm=TRUE)
+densityPlot(piscesDataClean$valence, na.rm=TRUE)
+
+##### Correlation #####
+piscesDataClean = piscesData[c("ID", "sex", "age", "pic_name","arousal","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean$ID = as.factor(piscesDataClean$ID)
+piscesDataClean$sex = as.factor(piscesDataClean$sex)
+# piscesDataClean = reshape(piscesDataClean, idvar = "ID", timevar = "pic_name", direction = "wide") # Drops two answers, two people answered 1 trial twice?
+cor(piscesDataClean$arousal, piscesDataClean$valence,  method = "pearson", use = "complete.obs")
+library("ggpubr")
+ggscatter(piscesDataClean, x = "arousal", y = "valence", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "arousal", ylab = "valence")
+
+# GLM
+options(contrasts = c("contr.sum","contr.poly")) #use this for the p value of the t test
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(effects)
+
+# Arousal
+formula <- 'arousal ~ pic_name + (1|ID)' # Declare formula
+
+d0.1 <- lmer(formula,data=piscesDataClean)
+d0.2 <- glmer(formula,data=piscesDataClean, family = Gamma(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+d0.3 <- glmer(formula,data=piscesDataClean, family = inverse.gaussian(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+
+# Model Selection
+modelNames = c(d0.1,d0.2,d0.3)
+tabel <- cbind(AIC(d0.1), AIC(d0.2), AIC(d0.3))
+chosenModel = modelNames[which(tabel == min(tabel))] # Get model with lowest AIC
+
+Anova(chosenModel[[1]], type = 'III')
+
+emmeans0.1 <- emmeans(chosenModel[[1]], pairwise ~ pic_name, adjust ="fdr", type = "response") #we don't adjust because we do this later
+emm0.1 <- summary(emmeans0.1)$emmeans
+emmeans0.1$contrasts
+
+plot(effect("pic_name", chosenModel[[1]]))
+
+# Valence
+formula <- 'valence ~ pic_name + (1|ID)' # Declare formula
+
+d0.1 <- lmer(formula,data=piscesDataClean)
+d0.2 <- glmer(formula,data=piscesDataClean, family = Gamma(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+d0.3 <- glmer(formula,data=piscesDataClean, family = inverse.gaussian(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+
+# Model Selection
+modelNames = c(d0.1,d0.2,d0.3)
+tabel <- cbind(AIC(d0.1), AIC(d0.2), AIC(d0.3))
+chosenModel = modelNames[which(tabel == min(tabel))] # Get model with lowest AIC
+
+Anova(chosenModel[[1]], type = 'III')
+
+emmeans0.1 <- emmeans(chosenModel[[1]], pairwise ~ pic_name, adjust ="fdr", type = "response") #we don't adjust because we do this later
+emm0.1 <- summary(emmeans0.1)$emmeans
+emmeans0.1$contrasts
+
+plot(effect("pic_name", chosenModel[[1]]))
+
+# Density plots
+library(car)
+densityPlot(piscesDataClean$valence, na.rm=TRUE)
+densityPlot(piscesDataClean$arousal, na.rm=TRUE)
