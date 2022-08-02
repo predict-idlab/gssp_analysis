@@ -1296,24 +1296,6 @@ docs = ["sphinx"]
 test = ["pytest (<5.4)", "pytest-cov"]
 
 [[package]]
-name = "mosqito"
-version = "1.0.8"
-description = "Modular Sound Quality Integrated Toolbox"
-category = "main"
-optional = false
-python-versions = ">= 3.5"
-
-[package.dependencies]
-numpy = "*"
-scipy = "*"
-
-[package.extras]
-SciDataTool = ["scidatatool"]
-all = ["pytest (>=5.4.1)", "pandas", "openpyxl", "scidatatool", "matplotlib", "pyuff"]
-testing = ["pytest (>=5.4.1)", "pandas", "openpyxl", "scidatatool", "matplotlib"]
-uff = ["pyuff"]
-
-[[package]]
 name = "multiprocess"
 version = "0.70.12.2"
 description = "better multiprocessing and multithreading in python"
@@ -2727,7 +2709,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.10"
-content-hash = "ab84cd6ee2db87dcc179dfdc3da3c83999d4ef0a488f5bc192eeb1f36ad9ec23"
+content-hash = "1f010d9edc7db481fb55d992009ab80b951248b6af4a05a476af71fcb2d494d2"
 
 [metadata.files]
 absl-py = [
@@ -3587,9 +3569,6 @@ mistune = [
 mock = [
     {file = "mock-4.0.3-py3-none-any.whl", hash = "sha256:122fcb64ee37cfad5b3f48d7a7d51875d7031aaf3d8be7c42e2bee25044eee62"},
     {file = "mock-4.0.3.tar.gz", hash = "sha256:7d3fbbde18228f4ff2f1f119a45cdffa458b4c0dee32eb4d2bb2f82554bac7bc"},
-]
-mosqito = [
-    {file = "mosqito-1.0.8.tar.gz", hash = "sha256:4e723d7538d16488fe14d7ee19d9f9ce2b4f1bad5b59b4c4f7fb3b0610d434a7"},
 ]
 multiprocess = [
     {file = "multiprocess-0.70.12.2-cp27-cp27m-macosx_10_12_x86_64.whl", hash = "sha256:35d41e410ca2a32977a483ae1f40f86b193b45cecf85567c2fae402fb8bf172e"},
