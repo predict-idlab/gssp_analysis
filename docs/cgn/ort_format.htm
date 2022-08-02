@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="N. Oostdijk">
+<meta name="Keywords" content="Corpus Gesproken Nederlands, CGN; versie 1.0">
+<title>ort format</title>
+<link href="../../../styles/cgnstyle.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1><a name="ort"></a>The .ort format</h1>
+<p>Files of type <em>.ort</em> contain the orthographic transcriptions in text 
+  format and can be produced, changed or viewed by means of the <a href="../../tools/viewers/praat/info.htm">PRAAT</a> 
+  software. In PRAAT the <em>.ort</em> files are produced by selecting the option 
+  'Write to short text file...' in the Write-menu. For exchange purposes the ShortTextGrid 
+  format is preferred to the TextGrid format because it has a more compact notation 
+  and therefore files in the ShortTextGrid format are smaller in size. The structure 
+  of a ShortTextGrid can be described in the following fashion:</p>
+<hr>
+<p>Please note: below non-literal text is indicated by means of curly brackets: 
+  <em>{...}</em>. The numbering of the lines has been used for the purpose of 
+  reference and is not part of the format.</p>
+<p>The first three lines are always the same. </p>
+<table class="sample">
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;1.</td>
+    <td>File type = &quot;ooTextFile short&quot;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;2.</td>
+    <td>&quot;TextGrid&quot;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;3.</td>
+    <td><i>{lege regel}</i></td>
+  </tr>
+</table>
+<p>On lines 4 and 5 a description is given of the timespan involved. Time here 
+  is iexpressed in terms of the number of seconds, using three decimals. </p>
+<table class="sample">
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;4.</td>
+    <td><i>{begintijdstip}</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;5.</td>
+    <td><i>{eindtijdstip}</i></td>
+  </tr>
+</table>
+<p>Lines 6 and 7 describe the number of tiers that occur in the file. </p>
+<table class="sample">
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;6.</td>
+    <td>&lt;exists&gt;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;7.</td>
+    <td><i>{aantal tiers}</i></td>
+  </tr>
+</table>
+<p>Lines 8 up to and including 12 contain information about the first tier. </p>
+<table class="sample">
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;8.</td>
+    <td>&quot;IntervalTier&quot;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">&nbsp;9.</td>
+    <td><i>&quot;{Sprekernaam}&quot;</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">10.</td>
+    <td><i>{begintijdstip}</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">11.</td>
+    <td><i>{eindtijdstip}</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">12.</td>
+    <td><i>{aantal intervallen in tier}</i></td>
+  </tr>
+</table>
+<p>Lines 13 up to and including 15 describe the very first interval. </p>
+<table class="sample">
+  <tr> 
+    <td bgcolor="#CCCCCC">13.</td>
+    <td><i>{begintijdstip}</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">14.</td>
+    <td><i>{eindtijdstip}</i></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCCCC">15.</td>
+    <td><i>&quot;{orthografisch transcript}&quot;</i></td>
+  </tr>
+</table>
+<p>Then all further intervals of the first tier occur in chronological order as 
+  in lines 13 up to and including 15. Every next tier after that follows all intervals 
+  of the preceding tier. The structure is identical to that of the first tier 
+  from line 8 onwards.</p>
+<hr>
+The size of the time span/interval can vary from less than 1 second up to about 
+10 seconds. A time marker can coincide with a sentence boundary, but this is not 
+necessarily the case. 
+<p>In the orthographic transcription a word may be marked by means of one of the 
+  following asterisk-letter codes:</p>
+<table border cellspacing=2 cellpadding=2>
+  <tr> 
+    <td class="sample"><strong>*v</strong></td>
+    <td>foreign (= non-Dutch) word</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>*d</strong></td>
+    <td>dialect</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>*a</strong></td>
+    <td>incomplete word</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>*u</strong></td>
+    <td>slip of the tongue or onomatope</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>*z</strong></td>
+    <td>word with dialectal pronunciation</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>*x</strong></td>
+    <td>word difficult to hear</td>
+  </tr>
+</table>
+<p>In addition, there are three special codes: </p>
+<table border cellspacing=2 cellpadding=2>
+  <tr> 
+    <td class="sample"><strong>ggg</strong></td>
+    <td>a non-speech sound produced by the speaker</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>xxx</strong></td>
+    <td>one or more incomprehensible words or partial words</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>Xxx</strong></td>
+    <td>an incomprehensible word that is clearly a titel or proper name</td>
+  </tr>
+</table>
+<p>All these codes can represent a word, part of a word or a sequence of words. 
+  Where applicable, the code may be separated from a word part by means of a hyphen 
+  (&quot;<span class="sample">-</span>&quot;). For example, &quot;<span class="sample">xxx-enzeventig</span>&quot; 
+  or &quot;<span class="sample">achten-xxx-tig</span>&quot;.</p>
+<p>The punctuation used is restricted to the following set: </p>
+<table border cellspacing=2 cellpadding=2>
+  <tr> 
+    <td class="sample"><strong>&quot;.&quot;</strong></td>
+    <td>the full stop marks the end of a sentence</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>&quot;...&quot;&nbsp;</strong></td>
+    <td>the ellipsis sign marks the end of an incomplete sentence</td>
+  </tr>
+  <tr> 
+    <td class="sample"><strong>&quot;?&quot;</strong></td>
+    <td>the question mark indicates the end of an interrogative sentence</td>
+  </tr>
+</table>
+<p>All diacritics that occur in the orthographic transcription have been encoded 
+  according to the ISO 8859.1 standard. In <a href="../entities.htm">entities.htm</a> 
+  an overview is presented of the special characters from this set that were used 
+  (ISO column). PRAAT can represent the ISO codes correctly under UNIX (and variants) 
+  and Windows.</p>
+</body>
+</html>
