@@ -51,3 +51,6 @@ MANIFEST
 .venv*/
 pretrained_models/
 *.parquet
+loc_data/
+notes/
+TODO
