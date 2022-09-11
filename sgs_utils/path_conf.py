@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 from inspect import getsourcefile
 
-data_dir = Path('/media') # this directory needs to be adjusted
+data_dir = Path('/media/SPS/') # this directory needs to be adjusted
 speech_data_root_dir = data_dir / 'speech_webapp_cleaned'
 
 speech_data_session_dir = speech_data_root_dir.joinpath('backup')
