@@ -13,7 +13,7 @@ library(lavaanPlot)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) #Set WD to script location
 
 ##### Loading data ##### 
-imageData <-as.data.frame(read_parquet("../loc_data/df_session_uuid.parquet"))
+imageData <-as.data.frame(read_parquet("../loc_data/df_session_tot_cleaned.parquet"))
 piscesData <- imageData[imageData$DB == 'PiSCES',]
 radboudData <- imageData[imageData$DB == 'Radboud',]
 marloesData <- imageData[imageData$DB == 'Marloes',]
