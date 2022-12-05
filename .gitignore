@@ -54,3 +54,5 @@ pretrained_models/
 loc_data/
 notes/
 TODO
+notebooks/pretrained_model_checkpoints/
+.vad_model/
