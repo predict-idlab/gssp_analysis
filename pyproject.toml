@@ -39,6 +39,9 @@ ipykernel = "^6.9.0"
 ipywidgets = "^7.6.5"
 jupyterlab = "^3.4.3"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.209"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
