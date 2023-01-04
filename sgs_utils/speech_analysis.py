@@ -1,26 +1,22 @@
-import numpy as np
-import pandas as pd
+from typing import List, Optional
 
-import torchaudio
-import noisereduce as nr
-import plotly.graph_objects as go
-import plotly.express as px
-import opensmile
-import seaborn as sns
 import matplotlib.pyplot as plt
-
-from ipywidgets import Output, GridspecLayout
+import noisereduce as nr
+import numpy as np
+import opensmile
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+import seaborn as sns
+import torchaudio
 from IPython import display
 from IPython.lib.display import Audio
-from typing import List
-
-from .path_conf import speech_data_session_dir, interim_speech_data_dir
-
-from plotly_resampler import FigureResampler
+from ipywidgets import GridspecLayout, Output
 from plotly.subplots import make_subplots
-
+from plotly_resampler import FigureResampler
 from speechbrain.pretrained.interfaces import VAD
 
+from .path_conf import interim_speech_data_dir, speech_data_session_dir
 
 # Load the VAD model
 VAD_model = VAD.from_hparams(
@@ -183,10 +179,10 @@ def analyze_audio_quality(
                             with out:
                                 display.display(Audio(arr, rate=fs))
                             grid[0, col_idx] = out
-                        except:
+                        except KeyError:
                             continue
                     display.display(grid)
-    
+
             # Extract opensmile features
             df_smile_arr_orig_n = smile_lld.process_signal(arr_orig_wav_n, fs_orig)
             reference = df_smile_arr_orig_n
@@ -252,7 +248,7 @@ def analyze_audio_quality(
                     make_subplots(
                         rows=n_rows,
                         shared_xaxes=True,
-                        vertical_spacing=0.05,
+                        # vertical_spacing=0.05,
                         specs=[[{"secondary_y": True}]] * n_rows,
                     ),
                     default_n_shown_samples=2500,
@@ -369,9 +365,16 @@ def analyze_audio_quality(
 
                 # update layout and show
                 fr.update_layout(
-                    # legend=dict(orientation="h", y=1.06, xanchor="left", x=0, font=dict(size=18)),
-                    height=150 * n_rows,
-                    title=f"{row.ID} - <b>{row.DB}</b> - {row.pic_name}__{row.time_str}",
+                    # legend=dict(
+                    #     orientation="h",
+                    #     y=1.06, xanchor="left", x=0, font=dict(size=18)
+                    # ),
+                    height=150 + 200 * n_rows,
+                    # height=800,
+                    title=(
+                        f"{row.ID} - <b>{row.DB}</b> - "
+                        f"{row.pic_name}__{row.time_str}"
+                    ),
                     title_x=0.5,
                     # colorway=px.colors.qualitative.Dark2,
                     template="plotly_white",
@@ -392,7 +395,7 @@ def analyze_audio_quality(
 
 def analyze_utterance(
     utterance: pd.Series,
-    smile_lld: opensmile.Smile = opensmile.Smile(
+    smile_lld: Optional[opensmile.Smile] = opensmile.Smile(
         feature_set=opensmile.FeatureSet.GeMAPSv01b,
         feature_level=opensmile.FeatureLevel.LowLevelDescriptors,
     ),
@@ -492,7 +495,7 @@ def analyze_utterance(
                 with out:
                     display.display(Audio(arr, rate=fs))
                 grid[1, col_idx] = out
-            except:
+            except KeyError:
                 continue
             out = Output()
             with out:
@@ -502,14 +505,15 @@ def analyze_utterance(
         display.display(grid)
 
     # Extract opensmile features
-    df_smile_arr_orig_n = smile_lld.process_signal(arr_orig_wav_n, fs_orig)
-    reference = df_smile_arr_orig_n
-    df_smile_wav, df_smile_arr_n_16Khz_nrs_v2 = None, None
-    df_smile_arr_n_16Khz = smile_lld.process_signal(arr_16khz_n, 16_000)
-    if arr_n_16Khz_nrs_v2 is not None:
-        df_smile_arr_n_16Khz_nrs_v2 = smile_lld.process_signal(
-            arr_n_16Khz_nrs_v2, 16_000
-        )
+    if smile_lld is not None:
+        df_smile_arr_orig_n = smile_lld.process_signal(arr_orig_wav_n, fs_orig)
+        reference = df_smile_arr_orig_n
+        df_smile_wav, df_smile_arr_n_16Khz_nrs_v2 = None, None
+        df_smile_arr_n_16Khz = smile_lld.process_signal(arr_16khz_n, 16_000)
+        if arr_n_16Khz_nrs_v2 is not None:
+            df_smile_arr_n_16Khz_nrs_v2 = smile_lld.process_signal(
+                arr_n_16Khz_nrs_v2, 16_000
+            )
 
     # Visualize autocorrelation
     if show_corr:
@@ -560,12 +564,15 @@ def analyze_utterance(
 
     # Plot
     n_rows = 1 + len(feat_cols)
+    subplot_kwargs = {}
+    if n_rows > 1:
+        subplot_kwargs["vertical_spacing"] = 0.05
     if plot:
         fr = FigureResampler(
             make_subplots(
                 rows=n_rows,
                 shared_xaxes=True,
-                vertical_spacing=0.05,
+                **subplot_kwargs,
                 specs=[[{"secondary_y": True}]] * n_rows,
             ),
             default_n_shown_samples=2500,
@@ -674,11 +681,15 @@ def analyze_utterance(
 
         # update layout and show
         fr.update_layout(
-            height=150 * n_rows,
-            title=f"{utterance.ID} - <b>{utterance.DB}</b> - {utterance.pic_name}__{utterance.time_str}",
+            height=200 + 150 * n_rows,
+            title=(
+                f"{utterance.ID} - <b>{utterance.DB}</b> - "
+                f"{utterance.pic_name}__{utterance.time_str}"
+            ),
             title_x=0.5,
             template="plotly_white",
         )
+        fr.update_xaxes(title_text="Time (s)")
         if plot_type == "png":
             fr.show(renderer="png", width=1400)
         elif plot_type == "dash":

@@ -1,7 +1,8 @@
-from pathlib import Path
-import pandas as pd
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
+
+import pandas as pd
 
 
 def parse_ort_file(ort_path: Path) -> pd.DataFrame:
@@ -45,7 +46,7 @@ def parse_ort_file(ort_path: Path) -> pd.DataFrame:
             # nb_intervals = int(lines[i + 4])
             i += 5
         else:
-            t_start, t_stop = lines[i: i + 2]
+            t_start, t_stop = lines[i : i + 2]
             transcript = lines[i + 2]
             df_list.append(
                 {
@@ -145,7 +146,7 @@ def parse_ort_file_agg(ort_path: Path) -> pd.DataFrame:
             # nb_intervals = int(lines[i + 4])
             i += 5
         else:
-            t_start, t_stop = lines[i: i + 2]
+            t_start, t_stop = lines[i : i + 2]
             transcript = lines[i + 2].strip('"')
 
             if len(transcript) == 0:

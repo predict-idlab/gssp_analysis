@@ -1,24 +1,28 @@
 from datetime import datetime
-from pathlib import Path
 from inspect import getsourcefile
+from pathlib import Path
+from socket import gethostname
 
-data_dir = Path('/media/SPS/') # this directory needs to be adjusted
-speech_data_root_dir = data_dir / 'speech_webapp_cleaned'
+if gethostname() == "gecko":
+    data_dir = Path("/media/SPS/")  # this directory needs to be adjusted
+    speech_data_root_dir = data_dir / "speech_webapp_cleaned"
 
-speech_data_session_dir = speech_data_root_dir.joinpath('backup')
-speech_web_app_image_dir = speech_data_root_dir.joinpath('img')
+    # Path towards the "Corpus Gesproken Nederlands" data
+    cgn_root_dir = Path("/media/SPS/cgn/")
+    cgn_ort_path = cgn_root_dir / "ort"
+else:
+    raise ValueError("Unknown hostname")
+
+speech_data_session_dir = speech_data_root_dir.joinpath("backup")
+speech_web_app_image_dir = speech_data_root_dir.joinpath("img")
 
 # Where intermediate data files are stored
-interim_dir = data_dir / 'interim/'
-interim_cgn_dir = interim_dir / 'cgn'
-interim_speech_data_dir = interim_dir / 'speech_webapp'
+interim_dir = data_dir / "interim/"
+interim_cgn_dir = interim_dir / "cgn"
+interim_speech_data_dir = interim_dir / "speech_webapp"
 
 # Local pandas dataframes
-loc_data_dir = Path(getsourcefile(lambda:0)).parent.parent.absolute() / 'loc_data'
-
-# Path towards the "Corpus Gesproken Nederlands" data
-cgn_root_dir = Path('/media/cgn/')
-cgn_ort_path = cgn_root_dir / 'ort'
+loc_data_dir = Path(getsourcefile(lambda: 0)).parent.parent.absolute() / "loc_data"
 
 
 # The date on which users were recuited via the prolific platform
