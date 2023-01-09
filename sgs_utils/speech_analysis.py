@@ -24,6 +24,137 @@ VAD_model = VAD.from_hparams(
 )
 
 
+def whole_duration_image(
+    r: pd.Series,
+    feat_cols: List[str],
+    df_smile_lld,
+    vad: bool = True,
+    plot_type: str = "png",
+):
+    """Plot the whole duration of the recording together with the VAD output and the
+    opensmile LLD features.
+    """
+    df_smile_lld_utt = df_smile_lld[
+        (df_smile_lld.ID == r.ID)
+        & (df_smile_lld.time_str == r.time_str)
+        # & (df_gemaps_lld.DB == r.DB)
+    ]
+    assert len(df_smile_lld_utt) > 0
+
+    arr_16khz_n = np.load(
+        df_smile_lld_utt.iloc[0].file.split(".wav")[0] + ".npy"
+    ).ravel()
+    t_arr_n = np.arange(len(arr_16khz_n)) / 16_000
+
+    e2e_boundaries_tuning = None
+    if vad:
+        e2e_boundaries_tuning = (
+            VAD_model.upsample_boundaries(
+                VAD_model.get_speech_segments(
+                    audio_file=str(df_smile_lld_utt.iloc[0].file),
+                    large_chunk_size=15,
+                    small_chunk_size=1,
+                    overlap_small_chunk=True,
+                    apply_energy_VAD=True,
+                    double_check=True,
+                    # neural proba activation thresholds
+                    activation_th=0.65,
+                    deactivation_th=0.2,
+                    # VAD energy activation thresholds
+                    en_activation_th=0.6,
+                    en_deactivation_th=0.3,
+                ),
+                audio_file=str(df_smile_lld_utt.iloc[0].file),
+            )
+            .numpy()
+            .ravel()
+        )
+
+    n_rows = 1 + len(feat_cols)
+    subplot_kwargs = {}
+    if n_rows > 1:
+        subplot_kwargs["vertical_spacing"] = 0.05
+
+    fr = FigureResampler(
+        make_subplots(
+            rows=n_rows,
+            shared_xaxes=True,
+            **subplot_kwargs,
+            specs=[[{"secondary_y": True}]] * n_rows,
+        ),
+        default_n_shown_samples=2500,
+    )
+    # Row 1: normalized wav + 16Khz resampled wav
+    fr.add_trace(
+        go.Scattergl(name="torch-norm"),  # "opacity": 0.5},
+        hf_y=arr_16khz_n,
+        hf_x=t_arr_n,
+        max_n_samples=10_000 if plot_type in ["png", "return"] else 2500,
+        col=1,
+        row=1,
+    )
+
+    if e2e_boundaries_tuning is not None:
+        fr.add_trace(
+            go.Scattergl(name="VAD boundaries"),
+            hf_y=e2e_boundaries_tuning,
+            hf_x=t_arr_n,
+            secondary_y=True,
+            col=1,
+            row=1,
+        )
+
+        # Add a rectangle where we would cut the audio
+        where = np.where(e2e_boundaries_tuning > 0)[0]
+        if not len(where):
+            speech_start_idx = 0
+            speech_end_idx = len(e2e_boundaries_tuning) - 1
+        else:
+            speech_start_idx, speech_end_idx = where[0], where[-1]
+        fr.add_vrect(
+            x0=0,
+            x1=max(0, t_arr_n[speech_start_idx] - 0.25),
+            line_width=0,
+            fillcolor="red",
+            opacity=0.2,
+        )
+        fr.add_vrect(
+            x0=min(t_arr_n[-1], t_arr_n[speech_end_idx] + 0.25),
+            x1=t_arr_n[-1],
+            line_width=0,
+            fillcolor="red",
+            opacity=0.2,
+        )
+
+    # Add the feature columns
+    for i, col in enumerate(feat_cols, start=2):
+        fr.add_trace(
+            go.Scattergl(name=col),
+            hf_y=df_smile_lld_utt[col].values,
+            hf_x=df_smile_lld_utt["end"],
+            max_n_samples=10_000 if plot_type == "png" else 2500,
+            col=1,
+            row=i,
+        )
+
+    # update layout and show
+    fr.update_layout(
+        height=200 + 150 * n_rows,
+        title=f"{r.ID} - <b>{r.DB}</b> - {r.pic_name}__{r.time_str}",
+        title_x=0.5,
+        template="plotly_white",
+    )
+
+    if plot_type == "png":
+        fr.show(renderer="png", width=2000, height=250 + 200 * n_rows)
+    elif plot_type == "dash":
+        fr.show_dash(mode="inline", port=8034)
+    elif plot_type == "return":
+        return fr
+    # Default: show the plot
+    fr.show()
+
+
 def analyze_audio_quality(
     df_session: pd.DataFrame,
     ID: str,

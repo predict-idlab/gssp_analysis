@@ -1,8 +1,10 @@
-import pandas as pd
 from typing import Union
 
+import pandas as pd
+
+
 def groupby_consecutive(
-        df: Union[pd.Series, pd.DataFrame], col_name: str = None
+    df: Union[pd.Series, pd.DataFrame], col_name: str = None
 ) -> pd.DataFrame:
     """Merges consecutive `column_name` values in a single dataframe.
 
@@ -33,10 +35,10 @@ def groupby_consecutive(
 
     df_cum = (
         (df[col_name].diff(1) != 0)
-            .astype("int")
-            .cumsum()
-            .rename("value_grp")
-            .to_frame()
+        .astype("int")
+        .cumsum()
+        .rename("value_grp")
+        .to_frame()
     )
     df_cum["sequence_idx"] = df.index
     df_cum[col_name] = df[col_name]
