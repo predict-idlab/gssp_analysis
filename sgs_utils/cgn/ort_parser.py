@@ -6,9 +6,19 @@ import pandas as pd
 
 
 def parse_ort_file(ort_path: Path) -> pd.DataFrame:
-    """Parse the ort (orthographic description) file
+    """Parse the ort (orthographic description) file.
 
     each row = a single time-range transcript
+
+    Parameters
+    ----------
+    ort_path : Path
+        The path of the ort file to parse.
+
+    Returns
+    -------
+    pd.DataFrame
+        The parsed ORT file in a dataframe format.
     """
     with open(ort_path, "rb") as f:
         lines = f.read().decode("iso-8859-1").split("\n")
