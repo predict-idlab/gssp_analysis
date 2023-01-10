@@ -1,12 +1,29 @@
+from datetime import datetime
+from inspect import getsourcefile
 from pathlib import Path
+from socket import gethostname
 
-# speech_data_root_dir = Path('/speechdump/jonvdrdo/data/speech_web_app')
-# speech_data_root_dir = Path('/media/speech_webapp')
-# speech_data_root_dir = Path('/users/jonvdrdo/jonas/data/speech_webapp')
-speech_data_root_dir = Path('/project_scratch/data/speech_web_app')
+if gethostname() == "gecko":
+    data_dir = Path("/media/SPS/")  # this directory needs to be adjusted
+    speech_data_root_dir = data_dir / "speech_webapp_cleaned"
 
-speech_data_session_dir = speech_data_root_dir.joinpath('backup')
+    # Path towards the "Corpus Gesproken Nederlands" data
+    cgn_root_dir = Path("/media/SPS/cgn/")
+    cgn_ort_path = cgn_root_dir / "ort"
+else:
+    raise ValueError("Unknown hostname")
 
-speech_web_app_image_dir = speech_data_root_dir.joinpath('img')
+speech_data_session_dir = speech_data_root_dir.joinpath("backup")
+speech_web_app_image_dir = speech_data_root_dir.joinpath("img")
 
-loc_data_dir = Path('../loc_data/')
+# Where intermediate data files are stored
+interim_dir = data_dir / "interim/"
+interim_cgn_dir = interim_dir / "cgn"
+interim_speech_data_dir = interim_dir / "speech_webapp"
+
+# Local pandas dataframes
+loc_data_dir = Path(getsourcefile(lambda: 0)).parent.parent.absolute() / "loc_data"
+
+
+# The date on which users were recuited via the prolific platform
+prolific_date = datetime(2022, 6, 22)

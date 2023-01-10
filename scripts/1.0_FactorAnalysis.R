@@ -12,7 +12,7 @@ library(lavaanPlot)
 # Set and Get directories
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) #Set WD to script location
 
-##### Loading data ##### 
+##### Loading data #####
 imageData <-as.data.frame(read_parquet("../loc_data/df_session_uuid.parquet"))
 imageData <-as.data.frame(read_parquet("../loc_data/df_session_tot_cleaned.parquet"))
 
@@ -90,8 +90,8 @@ piscesDataClean$sex = as.factor(piscesDataClean$sex)
 # piscesDataClean = reshape(piscesDataClean, idvar = "ID", timevar = "pic_name", direction = "wide") # Drops two answers, two people answered 1 trial twice?
 cor(piscesDataClean$arousal, piscesDataClean$valence,  method = "pearson", use = "complete.obs")
 library("ggpubr")
-ggscatter(piscesDataClean, x = "arousal", y = "valence", 
-          add = "reg.line", conf.int = TRUE, 
+ggscatter(piscesDataClean, x = "arousal", y = "valence",
+          add = "reg.line", conf.int = TRUE,
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "arousal", ylab = "valence")
 

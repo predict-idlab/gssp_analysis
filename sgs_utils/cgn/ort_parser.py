@@ -1,13 +1,24 @@
-from pathlib import Path
-import pandas as pd
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
+
+import pandas as pd
 
 
 def parse_ort_file(ort_path: Path) -> pd.DataFrame:
-    """Parse the ort (orthographic description) file
+    """Parse the ort (orthographic description) file.
 
     each row = a single time-range transcript
+
+    Parameters
+    ----------
+    ort_path : Path
+        The path of the ort file to parse.
+
+    Returns
+    -------
+    pd.DataFrame
+        The parsed ORT file in a dataframe format.
     """
     with open(ort_path, "rb") as f:
         lines = f.read().decode("iso-8859-1").split("\n")
@@ -45,7 +56,7 @@ def parse_ort_file(ort_path: Path) -> pd.DataFrame:
             # nb_intervals = int(lines[i + 4])
             i += 5
         else:
-            t_start, t_stop = lines[i: i + 2]
+            t_start, t_stop = lines[i : i + 2]
             transcript = lines[i + 2]
             df_list.append(
                 {
@@ -145,7 +156,7 @@ def parse_ort_file_agg(ort_path: Path) -> pd.DataFrame:
             # nb_intervals = int(lines[i + 4])
             i += 5
         else:
-            t_start, t_stop = lines[i: i + 2]
+            t_start, t_stop = lines[i : i + 2]
             transcript = lines[i + 2].strip('"')
 
             if len(transcript) == 0:
