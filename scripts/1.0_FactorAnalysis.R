@@ -14,9 +14,11 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) #Set WD to script lo
 
 ##### Loading data ##### 
 imageData <-as.data.frame(read_parquet("../loc_data/df_session_uuid.parquet"))
+imageData <-as.data.frame(read_parquet("../loc_data/df_session_tot_cleaned.parquet"))
+
 piscesData <- imageData[imageData$DB == 'PiSCES',]
 radboudData <- imageData[imageData$DB == 'Radboud',]
-marloesData <- imageData[imageData$DB == 'Marloes',]
+marloesData <- imageData[imageData$DB == 'marloes',]
 
 library(ltm)
 ##### Valence #####
@@ -104,12 +106,12 @@ library(effects)
 formula <- 'arousal ~ pic_name + (1|ID)' # Declare formula
 
 d0.1 <- lmer(formula,data=piscesDataClean)
-d0.2 <- glmer(formula,data=piscesDataClean, family = Gamma(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
-d0.3 <- glmer(formula,data=piscesDataClean, family = inverse.gaussian(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+# d0.2 <- glmer(formula,data=piscesDataClean, family = Gamma(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
+# d0.3 <- glmer(formula,data=piscesDataClean, family = inverse.gaussian(link = "identity"),glmerControl(optimizer= "bobyqa", optCtrl = list(maxfun = 100000)),nAGQ = 1)
 
 # Model Selection
-modelNames = c(d0.1,d0.2,d0.3)
-tabel <- cbind(AIC(d0.1), AIC(d0.2), AIC(d0.3))
+modelNames = c(d0.1)
+tabel <- cbind(AIC(d0.1))
 chosenModel = modelNames[which(tabel == min(tabel))] # Get model with lowest AIC
 
 Anova(chosenModel[[1]], type = 'III')
