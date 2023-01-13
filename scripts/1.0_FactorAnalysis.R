@@ -122,6 +122,36 @@ emmeans0.1$contrasts
 
 plot(effect("pic_name", chosenModel[[1]]))
 
+library(ggstatsplot)
+library(Polychrome)
+
+# for reproducibility
+set.seed(123)
+
+color = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+n = 15 
+colPalette = sample(color, n)
+# P15 = createPalette(n,  c("#ff0000", "#00ff00", "#0000ff"))
+pie(rep(1,n), col = colPalette)
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = arousal,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Arousal",                               # label for the y-axis variable
+  title = "Arousal values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
+
 # Valence
 formula <- 'valence ~ pic_name + (1|ID)' # Declare formula
 
@@ -141,6 +171,24 @@ emm0.1 <- summary(emmeans0.1)$emmeans
 emmeans0.1$contrasts
 
 plot(effect("pic_name", chosenModel[[1]]))
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = valence,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Valence",                               # label for the y-axis variable
+  title = "Valence values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
 
 # Density plots
 library(car)
