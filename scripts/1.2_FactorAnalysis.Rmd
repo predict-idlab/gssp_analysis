@@ -1,0 +1,389 @@
+---
+title: "1.2_FactorAnalysis"
+author: "MKappen"
+date: '2023-03-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document displaying the code and output for the cfa and glmm's ran for valence and arousal for two image sets.
+
+This results in the following (clickable) structure
+
+* [1.0. Pisces Dataset]
+
+  * [1.1. Valence]
+    * [1.1.1. Cronbach's Alpha]
+    * [1.1.2. CFA]
+    * [1.1.3. CFA Visualization]
+    * [1.1.4. Distributions]
+  
+  * [1.2. Arousal]
+    * [1.2.1. Cronbach's Alpha]
+    * [1.2.2. CFA]
+    * [1.2.3. CFA Visualization]
+    * [1.2.4. Distributions]
+    
+* [2.0. Radboud faces]
+
+  * [2.1. Valence]
+    * [2.1.1. Cronbach's Alpha]
+    * [2.1.2. CFA]
+    * [2.1.3. CFA Visualization]
+    * [2.1.4. Distributions]
+  
+  * [2.2. Arousal]
+    * [2.2.1. Cronbach's Alpha]
+    * [2.2.2. CFA]
+    * [2.2.3. CFA Visualization]
+    * [2.2.4. Distributions]
+
+## General code
+Used to load and prepare dataframes
+```{r echo = T, results = 'hide', error=FALSE, warning=FALSE, message=FALSE}
+##### Set environment #####
+rm(list = ls()) # Clear environment
+cat("\014") # Clear console
+dev.off() # Clear plot window
+options(contrasts=c("contr.sum", "contr.poly")) # Set contrast settings to effect coding
+
+# Libraries
+library(arrow)
+library(lavaan)
+library(lavaanPlot)
+library(psych)
+library(ltm)
+library(car)
+library(ggplot2)
+library(ggstatsplot)
+library(Polychrome)
+
+#GLM specific
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(effects)
+```
+
+```{r echo = T, results = 'hide'}
+##### Loading data #####
+imageData <-as.data.frame(read_parquet("../loc_data/df_session_tot_cleaned.parquet"))
+
+piscesData <- imageData[imageData$DB == 'PiSCES',]
+radboudData <- imageData[imageData$DB == 'Radboud',]
+marloesData <- imageData[imageData$DB == 'marloes',]
+
+```
+# 1.0. Pisces Dataset
+## 1.1. Valence
+
+```{r echo = T, results = 'hide'}
+##### Valence #####
+piscesDataClean = piscesData[c("ID", "pic_name","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean = reshape(piscesDataClean, idvar = "ID", timevar = "pic_name", direction = "wide")
+piscesDataCronbachs = piscesDataClean[ ,2:16]
+```
+### 1.1.1. Cronbach's Alpha
+```{r, echto = T, warning=FALSE, message=FALSE}
+# Calculate Cronbach's alpha using alpha()
+alphavar = psych::alpha(piscesDataCronbachs, check.keys = TRUE)
+summary(alphavar)
+
+``` 
+
+### 1.1.2. CFA
+```{r echo = T, results = 'hide'}
+names(piscesDataClean)[2:16] = c("Picture_105", "Picture_82",  "Picture_118", "Picture_65", "Picture_88", "Picture_87", "Picture_59", "Picture_93", "Picture_56", "Picture_81",
+                                 "Picture_110", "Picture_96",  "Picture_132", "Picture_80",  "Picture_98" )
+
+HS.model <- 'pisces =~ Picture_105 + Picture_82 + Picture_118 + Picture_65 + Picture_88 + Picture_87 + Picture_59 + Picture_93 + Picture_56 + Picture_81 + Picture_110 + Picture_96 + Picture_132 + Picture_80 + Picture_98'
+```
+
+### Fit and visualize
+```{r, echo=FALSE}
+fit <- cfa(HS.model, data=piscesDataClean, std.lv=TRUE)
+summary(fit, fit.measures=TRUE, standardized=TRUE)
+
+# Visualize CFA
+labels <- list(Picture_105 = "P_105", Picture_82 = "P_82", Picture_118 = "P_118", Picture_65 = "P_65", Picture_88 = "P_88", Picture_87 = "P_87", Picture_59 = "P_59", Picture_93 = "P_93", Picture_56 = "P_56", Picture_81 = "P_81", Picture_110 = "P_110", Picture_96 = "P_96", Picture_132 = "P32", Picture_80 = "P_80", Picture_98 = "P_98")
+```
+### 1.1.3. CFA Visualization
+Pisces dataset - Valence
+```{r, echo=FALSE, out.width="100%"}
+# Source: https://cran.r-project.org/web/packages/lavaanPlot/vignettes/Intro_to_lavaanPlot.html
+# Standardized and with significance levels
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE, stars = "latent")
+```
+
+### 1.1.4. Distributions
+```{r echo = T, results = 'hide'}
+# Re-prep data
+piscesDataClean = piscesData[c("ID","pic_name","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean$ID = as.factor(piscesDataClean$ID)
+```
+### Visualizations
+Pisces - Valence
+
+```{r, echo=FALSE, out.width="100%", warning=FALSE, message=FALSE, fig.width = 10, fig.height = 6}
+# Generate plot colors
+set.seed(123) # for reproducability
+
+color = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+n = 15 
+colPalette = sample(color, n)
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = valence,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Valence",                               # label for the y-axis variable
+  title = "Valence values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
+```
+
+## 1.2. Arousal
+
+```{r echo = T, results = 'hide'}
+##### Arousal #####
+piscesDataClean = piscesData[c("ID", "pic_name","arousal")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean = reshape(piscesDataClean, idvar = "ID", timevar = "pic_name", direction = "wide")
+piscesDataCronbachs = piscesDataClean[ ,2:16]
+```
+### 1.2.1. Cronbach's Alpha
+```{r, echto = T, warning=FALSE, message=FALSE}
+# Calculate Cronbach's alpha using alpha()
+alphavar = psych::alpha(piscesDataCronbachs, check.keys = TRUE)
+summary(alphavar)
+
+``` 
+
+### 1.2.2. CFA
+```{r echo = T, results = 'hide'}
+names(piscesDataClean)[2:16] = c("Picture_105", "Picture_82",  "Picture_118", "Picture_65", "Picture_88", "Picture_87", "Picture_59", "Picture_93", "Picture_56", "Picture_81",
+                                 "Picture_110", "Picture_96",  "Picture_132", "Picture_80",  "Picture_98" )
+
+HS.model <- 'pisces =~ Picture_105 + Picture_82 + Picture_118 + Picture_65 + Picture_88 + Picture_87 + Picture_59 + Picture_93 + Picture_56 + Picture_81 + Picture_110 + Picture_96 + Picture_132 + Picture_80 + Picture_98'
+```
+
+### Fit and visualize
+```{r, echo=FALSE}
+fit <- cfa(HS.model, data=piscesDataClean, std.lv=TRUE)
+summary(fit, fit.measures=TRUE, standardized=TRUE)
+
+# Visualize CFA
+labels <- list(Picture_105 = "P_105", Picture_82 = "P_82", Picture_118 = "P_118", Picture_65 = "P_65", Picture_88 = "P_88", Picture_87 = "P_87", Picture_59 = "P_59", Picture_93 = "P_93", Picture_56 = "P_56", Picture_81 = "P_81", Picture_110 = "P_110", Picture_96 = "P_96", Picture_132 = "P32", Picture_80 = "P_80", Picture_98 = "P_98")
+```
+### 1.2.3. CFA Visualization
+Pisces dataset - Arousal
+```{r, echo=FALSE, out.width="100%"}
+# Source: https://cran.r-project.org/web/packages/lavaanPlot/vignettes/Intro_to_lavaanPlot.html
+# Standardized and with significance levels
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE, stars = "latent")
+```
+
+### 1.2.4. Distributions
+```{r echo = T, results = 'hide'}
+# Re-prep data
+piscesDataClean = piscesData[c("ID","pic_name","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean$ID = as.factor(piscesDataClean$ID)
+```
+### Visualizations
+Pisces - Arousal
+
+```{r, echo=FALSE, out.width="100%", warning=FALSE, message=FALSE, fig.width = 10, fig.height = 6}
+# Generate plot colors
+set.seed(123) # for reproducability
+
+color = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+n = 15 
+colPalette = sample(color, n)
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = valence,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Valence",                               # label for the y-axis variable
+  title = "Valence values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
+```
+# 2.0. Radboud faces
+## 2.1. Valence
+
+```{r echo = T, results = 'hide'}
+##### Valence #####
+radboudDataClean = radboudData[c("ID", "pic_name","valence")]
+radboudDataClean$pic_name = as.factor(radboudDataClean$pic_name)
+radboudDataClean = reshape(radboudDataClean, idvar = "ID", timevar = "pic_name", direction = "wide")
+radboudDataCronbachs = radboudDataClean[ ,2:16]
+```
+### 2.1.1. Cronbach's Alpha
+```{r, echto = T, warning=FALSE, message=FALSE}
+# Calculate Cronbach's alpha using alpha()
+alphavar = psych::alpha(radboudDataCronbachs, check.keys = TRUE)
+summary(alphavar)
+
+``` 
+
+### 2.1.2. CFA
+```{r echo = T, results = 'hide'}
+names(radboudDataClean)[2:16] = c('Face_01', 'Face_36', 'Face_32', 'Face_61', 'Face_04', 'Face_24', 'Face_02', 'Face_49', 'Face_58', 'Face_46', 'Face_05', 'Face_33', 'Face_57', 'Face_47', 'Face_27')
+
+HS.model <- 'radboud =~ Face_01 + Face_36 + Face_32 + Face_61 + Face_04 + Face_24 + Face_02 + Face_49 + Face_58 + Face_46 + Face_05 + Face_33 + Face_57 + Face_47 + Face_27'
+```
+
+### Fit and visualize
+```{r, echo=FALSE}
+fit <- cfa(HS.model, data=radboudDataClean, std.lv=TRUE)
+summary(fit, fit.measures=TRUE, standardized=TRUE)
+
+# Visualize CFA
+labels <- list(Face_01 = "F_01", Face_36 = "F_36", Face_32 = "F_32", Face_61 = "F_61", Face_04 = "F_04", Face_24 = "F_24", Face_02 = "F_02", Face_49 = "F_49", Face_58 = "F_58", Face_46 = "F_46", Face_05 = "F_05", Face_33 = "F_33", Face_57 = "F_57", Face_47 = "F_47", Face_27 = "F_27")
+```
+### 2.1.3. CFA Visualization
+Radboud dataset - Valence
+```{r, echo=FALSE, out.width="100%"}
+# Source: https://cran.r-project.org/web/packages/lavaanPlot/vignettes/Intro_to_lavaanPlot.html
+# Standardized and with significance levels
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE, stars = "latent")
+```
+### 2.1.4. Distributions
+```{r echo = T, results = 'hide'}
+# Re-prep data
+piscesDataClean = piscesData[c("ID","pic_name","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean$ID = as.factor(piscesDataClean$ID)
+```
+### Visualizations
+Pisces - Valence
+
+```{r, echo=FALSE, out.width="100%", warning=FALSE, message=FALSE, fig.width = 10, fig.height = 6}
+# Generate plot colors
+set.seed(123) # for reproducability
+
+color = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+n = 15 
+colPalette = sample(color, n)
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = valence,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Valence",                               # label for the y-axis variable
+  title = "Valence values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
+```
+## 2.2. Arousal
+
+```{r echo = T, results = 'hide'}
+##### Valence #####
+radboudDataClean = radboudData[c("ID", "pic_name","arousal")]
+radboudDataClean$pic_name = as.factor(radboudDataClean$pic_name)
+radboudDataClean = reshape(radboudDataClean, idvar = "ID", timevar = "pic_name", direction = "wide")
+radboudDataCronbachs = radboudDataClean[ ,2:16]
+```
+### 2.2.1. Cronbach's Alpha
+```{r, echto = T, warning=FALSE, message=FALSE}
+# Calculate Cronbach's alpha using alpha()
+alphavar = psych::alpha(radboudDataCronbachs, check.keys = TRUE)
+summary(alphavar)
+
+``` 
+
+### 2.2.2. CFA
+```{r echo = T, results = 'hide'}
+names(radboudDataClean)[2:16] = c('Face_01', 'Face_36', 'Face_32', 'Face_61', 'Face_04', 'Face_24', 'Face_02', 'Face_49', 'Face_58', 'Face_46', 'Face_05', 'Face_33', 'Face_57', 'Face_47', 'Face_27')
+
+HS.model <- 'radboud =~ Face_01 + Face_36 + Face_32 + Face_61 + Face_04 + Face_24 + Face_02 + Face_49 + Face_58 + Face_46 + Face_05 + Face_33 + Face_57 + Face_47 + Face_27'
+```
+
+### Fit and visualize
+```{r, echo=FALSE}
+fit <- cfa(HS.model, data=radboudDataClean, std.lv=TRUE)
+summary(fit, fit.measures=TRUE, standardized=TRUE)
+
+# Visualize CFA
+labels <- list(Face_01 = "F_01", Face_36 = "F_36", Face_32 = "F_32", Face_61 = "F_61", Face_04 = "F_04", Face_24 = "F_24", Face_02 = "F_02", Face_49 = "F_49", Face_58 = "F_58", Face_46 = "F_46", Face_05 = "F_05", Face_33 = "F_33", Face_57 = "F_57", Face_47 = "F_47", Face_27 = "F_27")
+```
+### 2.2.3. CFA Visualization
+Radboud dataset - Arousal
+```{r, echo=FALSE, out.width="100%"}
+# Source: https://cran.r-project.org/web/packages/lavaanPlot/vignettes/Intro_to_lavaanPlot.html
+# Standardized and with significance levels
+lavaanPlot(model = fit, labels = labels, node_options = list(shape = "box", fontname = "Helvetica"), edge_options = list(color = "grey"), coefs = TRUE, stand = TRUE, stars = "latent")
+```
+### 2.2.4. Distributions
+```{r echo = T, results = 'hide'}
+# Re-prep data
+piscesDataClean = piscesData[c("ID","pic_name","valence")]
+piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
+piscesDataClean$ID = as.factor(piscesDataClean$ID)
+```
+### Visualizations
+Pisces - Valence
+
+```{r, echo=FALSE, out.width="100%", warning=FALSE, message=FALSE, fig.width = 10, fig.height = 6}
+# Generate plot colors
+set.seed(123) # for reproducability
+
+color = grDevices::colors()[grep('gr(a|e)y', grDevices::colors(), invert = T)]
+n = 15 
+colPalette = sample(color, n)
+
+# plot
+p = ggstatsplot::ggbetweenstats(
+  data = piscesDataClean,
+  x = pic_name,
+  y = valence,
+  notch = TRUE,                                   # show notched box plot
+  mean.plotting = TRUE,                           # whether mean for each group id to be displayed 
+  type = "parametric",                            # which type of test is to be run
+  xlab = "Image number",                          # label for the x-axis variable
+  ylab = "Valence",                               # label for the y-axis variable
+  title = "Valence values",                       # title text for the plot
+  ggtheme = ggplot2::theme_grey(),                # choosing a different theme
+  # palette = "Set3" + c("#00AFBB", "#E7B800", "#FC4E07"),                              # choosing a different color palette
+  messages = FALSE
+) 
+p = p + scale_color_manual(values = colPalette)
+p
+```

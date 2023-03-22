@@ -56,3 +56,6 @@ notes/
 TODO
 notebooks/pretrained_model_checkpoints/
 .vad_model/
+
+# rMarkdown folder
+scripts/1.2_FactorAnalysis_cache

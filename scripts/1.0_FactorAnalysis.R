@@ -8,19 +8,18 @@ options(contrasts=c("contr.sum", "contr.poly")) # Set contrast settings to effec
 library(arrow)
 library(lavaan)
 library(lavaanPlot)
+library(ltm)
 
 # Set and Get directories
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) #Set WD to script location
 
 ##### Loading data #####
-imageData <-as.data.frame(read_parquet("../loc_data/df_session_uuid.parquet"))
 imageData <-as.data.frame(read_parquet("../loc_data/df_session_tot_cleaned.parquet"))
 
 piscesData <- imageData[imageData$DB == 'PiSCES',]
 radboudData <- imageData[imageData$DB == 'Radboud',]
 marloesData <- imageData[imageData$DB == 'marloes',]
 
-library(ltm)
 ##### Valence #####
 piscesDataClean = piscesData[c("ID", "pic_name","valence")]
 piscesDataClean$pic_name = as.factor(piscesDataClean$pic_name)
@@ -28,7 +27,10 @@ piscesDataClean = reshape(piscesDataClean, idvar = "ID", timevar = "pic_name", d
 
 # Cronbach's Alpha
 cronbach.alpha(piscesDataClean, CI=TRUE, na.rm = TRUE)
-
+library(psych)
+piscesDataCronbachs = piscesDataClean[ ,2:16]
+alphavar = alpha(piscesDataCronbachs, check.keys = TRUE)
+summary(alphavar)
 # CFA
 names(piscesDataClean)[2:16] = c("Picture_105", "Picture_82",  "Picture_118", "Picture_65", "Picture_88", "Picture_87", "Picture_59", "Picture_93", "Picture_56", "Picture_81",
                                  "Picture_110", "Picture_96",  "Picture_132", "Picture_80",  "Picture_98" )
@@ -120,6 +122,9 @@ emmeans0.1 <- emmeans(chosenModel[[1]], pairwise ~ pic_name, adjust ="fdr", type
 emm0.1 <- summary(emmeans0.1)$emmeans
 emmeans0.1$contrasts
 
+plot(effect("pic_name", chosenModel[[1]]), )
+plot(effect("pic_name", chosenModel[[1]]), las = 2)
+par(mar = c(5, 5, 4, 2) + 0.1)
 plot(effect("pic_name", chosenModel[[1]]))
 
 library(ggstatsplot)
@@ -194,3 +199,11 @@ p
 library(car)
 densityPlot(piscesDataClean$valence, na.rm=TRUE)
 densityPlot(piscesDataClean$arousal, na.rm=TRUE)
+
+
+# 
+##### Valence #####
+radboudDataClean = radboudData[c("ID", "pic_name","valence")]
+radboudDataClean$pic_name = as.factor(radboudDataClean$pic_name)
+radboudDataClean = reshape(radboudDataClean, idvar = "ID", timevar = "pic_name", direction = "wide")
+radboudDataCronbachs = radboudDataClean[ ,2:16]
