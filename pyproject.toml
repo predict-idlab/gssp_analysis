@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "semi_guided_speech"
+name = "GSSP"
 version = "0.1.0"
 description = "Code withholding the data-analysis part for the semi-guided-speech paper"
 authors = ["jonas <jonvdrdo.vanderdonckt@ugent.be>"]
@@ -28,6 +28,7 @@ torchaudio = "0.11.0"
 kaleido = "0.2.1"
 noisereduce = "^2.0.1"
 orjson = ">=3.8.0"
+praat-parselmouth = "^0.4.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
