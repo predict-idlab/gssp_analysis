@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := all
-isort = isort sgs_utils
-black = black sgs_utils
+code_folder = GSSP_utils
+isort = isort $(code_folder)
+black = black $(code_folder)
 
 # install:
 # 	pip install -e .
@@ -17,7 +18,7 @@ format:
 
 .PHONY: lint-python
 lint-python:
-	ruff sgs_utils
+	ruff $(code_folder)
 	$(isort) --check-only --df
 	$(black) --check --diff
 
@@ -27,7 +28,7 @@ lint: lint-python
 
 .PHONY: mypy
 mypy:
-	mypy sgs_utils
+	mypy $(code_folder)
 
 
 
