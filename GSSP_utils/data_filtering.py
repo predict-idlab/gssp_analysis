@@ -147,3 +147,40 @@ def _skip_id_mask(df: pd.DataFrame) -> pd.Series:
 
 def get_valid_audio_mask(df: pd.DataFrame) -> pd.Series:
     return ~_skip_id_mask(df) & ~_silent_recording_mask(df) & ~_noisy_recording_mask(df)
+
+
+def id_vars_set() -> set:
+    """A set of non speech feature variables"""
+    id_vars = [
+        "file",
+        "start",
+        "end",
+        "DB",
+        "speech_style",
+        "DB_no",
+        "education",
+        "timestamp",
+        "time_str",
+        "sex",
+        "age",
+        "Marloes",
+        "PiSCES",
+        "Radboud",
+        "session_no",
+        "ID",
+        "wav_size",
+        "device",
+        "pic_name",
+        "arousal",
+        "valence",
+        "pic_no",
+        "prolific_token",
+        "pic_count",
+        "wav_timestamp",
+        "wav_duration_s",
+        "wav_sample_rate",
+        "VAD_speech_end_s",
+        "VAD_speech_start_s",
+        "VAD_sliced_duration_s",
+    ]
+    return set(id_vars)

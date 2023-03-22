@@ -530,7 +530,8 @@ def analyze_utterance(
         feature_set=opensmile.FeatureSet.GeMAPSv01b,
         feature_level=opensmile.FeatureLevel.LowLevelDescriptors,
     ),
-    feat_cols: List[str] = ["F0semitoneFrom27.5Hz_sma3nz", "jitterLocal_sma3nz"],
+    # feat_cols: List[str] = ["F0semitoneFrom27.5Hz_sma3nz", "jitterLocal_sma3nz"],
+    feat_cols: List[str] = ["F0semitoneFrom27.5Hz_sma3nz", "shimmerLocaldB_sma3nz"],
     # Listen to audio
     audio=True,
     audio_begin_s=10,
@@ -541,6 +542,8 @@ def analyze_utterance(
     # Transform audio
     norm_audio=True,
     noise_reduction=True,
+    noise_factor=0,
+    show_noise_audio=False,
     vad=True,
     show_corr=True,
 ) -> None:
@@ -565,6 +568,10 @@ def analyze_utterance(
     )[0]
     arr_orig_wav_n, fs_orig = torchaudio.load(wav_path_orig, normalize=True)
     arr_orig_wav_n = arr_orig_wav_n.numpy().ravel()
+    print('range', round(arr_orig_wav_n.min(), 2), round(arr_orig_wav_n.max(), 2), round(np.ptp(arr_orig_wav_n), 2))
+    print('range', np.round(np.quantile(arr_orig_wav_n, [0.001, 0.999]), 2))
+    # min_ampl, max_ampl  = np.quantile(arr_orig_wav_n, [0.002, 0.998]), 2)
+
 
     ## THe 16khz, 32 bit float wav path
     wav_path_16khz = list(
@@ -577,6 +584,19 @@ def analyze_utterance(
         16_000,
     )
     t_arr_n = np.arange(0, arr_16khz_n.shape[0]) / fs
+
+    # TODO: de noise factor gaan relaten aan gemiddelde energie van de audio
+    # dit dan in DB gaan uitdrukken en zo formuleren als step
+    # ... in order to mitigate OpenSMILEs
+    arr_16khz_n_noisy = None
+    arr_orig_wav_n_noisy = None
+    if noise_factor > 0:
+        rand_func = np.random.rand
+        noise = (rand_func(len(arr_16khz_n)) * noise_factor).astype(np.float32)
+        arr_16khz_n_noisy = arr_16khz_n + noise
+        noise = (rand_func(len(arr_orig_wav_n)) * noise_factor).astype(np.float32)
+        arr_orig_wav_n_noisy = arr_orig_wav_n + noise
+    t_arr_orig_n = np.arange(arr_orig_wav_n.shape[0]) / fs_orig
 
     arr_n_16Khz_nrs_v2 = None
     if noise_reduction:  # Noise reduction
@@ -644,6 +664,15 @@ def analyze_utterance(
         if arr_n_16Khz_nrs_v2 is not None:
             df_smile_arr_n_16Khz_nrs_v2 = smile_lld.process_signal(
                 arr_n_16Khz_nrs_v2, 16_000
+            )
+        df_smile_arr_n_16Khz_noise = None
+        df_smile_arr_n_orig_noise = None
+        if noise_factor > 0:
+            df_smile_arr_n_16Khz_noise = smile_lld.process_signal(
+                arr_16khz_n_noisy, 16_000
+            )
+            df_smile_arr_n_orig_noise = smile_lld.process_signal(
+                arr_orig_wav_n_noisy, fs_orig
             )
 
     # Visualize autocorrelation
@@ -717,6 +746,15 @@ def analyze_utterance(
             col=1,
             row=1,
         )
+        if noise_factor > 0 and show_noise_audio:
+            fr.add_trace(
+                go.Scattergl(name="torch-norm"),  # "opacity": 0.5},
+                hf_y=arr_orig_wav_n_noisy,
+                hf_x=t_arr_orig_n,
+                max_n_samples=10_000 if plot_type in ["png", "return", "plotly"] else 2500,
+                col=1,
+                row=1,
+            )
 
         if e2e_boundaries_tuning is not None:
             fr.add_trace(
@@ -786,6 +824,14 @@ def analyze_utterance(
                 [
                     ("Smile-orig-n", df_smile_arr_orig_n),
                     ("Smile-16khz-n", df_smile_arr_n_16Khz),
+                    *(
+                        [
+                            ("Smile-16khz-noise", df_smile_arr_n_16Khz_noise),
+                            ("Smile-orig-n-noise", df_smile_arr_n_orig_noise),
+                        ]
+                        if noise_factor > 0
+                        else []
+                    ),
                 ]
                 + (
                     [
@@ -820,11 +866,22 @@ def analyze_utterance(
             title_x=0.5,
             template="plotly_white",
         )
-        fr.update_xaxes(title_text="Time (s)")
+        fr.update_xaxes(title_text="Time (s)", row=n_rows, col=1)
         if plot_type == "png":
             fr.show(renderer="png", width=1400)
         elif plot_type == "dash":
-            fr.show_dash(mode="inline", port=8034)
+            fr.update_layout(
+                legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.02,
+                    xanchor="right",
+                    x=.95,
+                )
+            )
+            fr.show_dash(mode="inline", port=8025)
+        elif plot_type == "return":
+            return fr
         else:
             fr.show()
 
