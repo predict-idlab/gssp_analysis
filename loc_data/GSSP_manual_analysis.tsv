@@ -1,0 +1,90 @@
+ID	Retain	Retain after parsing	Use NR	NR version	Remarks	Quality
+099ceb4d-28f3-4b1f-8f8e-16b439a882f1	YES	YES	Maybe	v2	Misschien toch NR v2 op deze participant toepasse. Veel blazen in de microfoon + cracks	
+0bae55f8-2aab-4c7b-917f-7f0c3e627e5f	UNSURE	NO	Maybe	v1	Zeker geen native nederlands spreker - check with mitchel. Ook een klein beetje een visbokaal-effect / lage kwaliteit microfoon	
+0c28e160-d7bb-4b17-829c-c9ebc7ad0a1f	YES	YES	Maybe	v1 or v2	Should have low quality user data, However, I do find the quality sufficient	
+0ce7b123-c80b-44f3-ad3e-f935d9072cef	YES	YES	Maybe	v1	NR v1 doet het echt heel goed	
+0e919efd-954e-4c12-98fb-dcf2d0a2b4e0	YES	YES	Maybe	v2	No NR needed	
+0e92d89e-a869-470f-8318-932da5107b24	YES	YES	Maybe	v2		
+1310da4b-d905-421e-9b4c-ba002d8058e7	YES	YES	NO		Little noise in background, but does not seem to affect quality of opensmile	
+1bf0c688-1152-4489-8af0-b2419b18f2bf	YES	YES	NO	/	heel cleane participant, de voicing proba's van de compare zijn hier echt heel nice van!	
+1d259634-7d1a-461c-9098-5be8e94b105b	YES	YES	Maybe	v2	Heel lichtjes achtergrond noise (ruis op de microfoon, maar lijkt niet echt de audio kwaliteit te affecten), maar over het algemeen redelijk clean	
+20adc51f-8ef5-41a2-9297-8dc263b40221	YES	YES	Maybe	v2	GAIN humming geluid op de achtergrond. op zich lijken de opensmile features al goed zonder noise reduction	
+271093f8-4d3f-4ee0-8a6e-faf9a61c83a4	YES	YES	NO	v2	Features look way better without NR, also fewer nois avaialbe in audio	
+28d01050-e4e0-4115-a5e9-09c8cb917fb0	UNSURE	NO	NO	/	Weird accent, audio features do look rather okay when they are extracted, but more often than not, they are not extracted.	
+29fb88a7-d9de-428b-9905-88d1f05a6154	YES	YES	NO	/	Heel korte radbouds; sub 20 seconden.	
+2b9fffea-9eea-43cc-9f1a-f026cbb4a19b	YES	YES	NO	/	1 marloes die 0 seconden is -> wordt eruit gefilterd	
+2c9c6455-fbfd-440b-8a82-3c073d48316c	YES	YES	NO	/	Clean!	
+2e98e07d-5d7c-469b-aee1-2421856671b0	YES	YES	Maybe	v2	Wel nog wat errors bij bepaalde files, to check later on ==> is omdat deze files heel veel stiltes bevatten. Heerlijk!\	
+3021f503-6e98-4c4a-8102-08ed581fa208	YES	YES	No	v2		
+30e98ab0-b9c4-4dfe-a00f-1634bef1c426	YES	YES	No	v2		
+31c59432-781c-4583-bba9-4d6d55be19e9	YES	YES	Maybe	v2		
+31e224eb-52af-4edf-b42b-a22960958dcf	YES	YES	No	/	Looks really good without normalization!	
+33583a00-841f-4bef-b711-a8fe58c14476	YES	YES	No	/	Enkele 0s radboud files	
+36996711-b0d1-41f9-974d-65bf8f7746dc	YES	YES	No	/		
+3a8266c9-7087-45fe-98e4-6c9c001c0050	UNSURE	UNSURE	No	/	Low quality user data Opensmile features lijken wat raar.	Neig mss eerder naar een yes bij deze participant
+3bdd33ef-9671-4a3e-b152-eff41ef674e8	YES	YES	No	/	Heeft enkele marloezen die 0s duren	
+42c842a5-7051-44c3-af42-cf824fded959	NO	NO	/	/	Really Low quality user data	Heeft enkele files die geen jitter zijn, maar lijkt me niet de moeite waard om hem om die reden de includerne
+43b0a921-687d-4a32-873f-63a408ff9cfc	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD	
+46914c9d-f87b-4ee5-aaf4-fe30d0ec272a	YES	YES	NO	/	Redelijk noisy, maar opensmile lijkt er goed mee om te kunnen. Heeft precies wel een niet-belgisch accent	
+4949e55b-daff-4255-9741-3206033a736b	YES	YES	NO	/		
+5307991a-b2cd-46b6-a925-3bb998e34da7	YES	YES	NO	/	Heeft een recording van 180s!	
+565e07a3-e1b5-49b6-9aa3-8c9dea8fdc5e	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD	
+5ef38e39-8146-4cf5-b365-43a08eac9905	YES	YES	NO	/	Heel veel korte segmenten	
+63defe6b-db35-4b9c-b53d-90df6612beaa	YES	YES	NO	/		
+65bae23a-aa8d-435b-8a77-95a5773b3a42	YES	YES	NO	/		
+69a7b54c-9db3-4b35-9e85-dd2592c10a00	YES	YES	NO	/		
+716dc108-5588-49ed-bf3c-04fb87212e2b	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD Is volgens mij de sissende s	
+795f5119-2b11-49f9-80ea-e5a5ef61f4bf	YES	YES	NO	/		
+7bca9b05-3c9a-4b4d-9e75-be0bd9bfc929	YES	YES	NO	/	Soms heel lichtjes in de microfoon geblazen	
+7e62dc42-e811-4674-ba8b-302850dd84e5	YES	YES	NO	/		
+7f3bc021-b77d-4ae5-82d2-3cd406680246	YES	YES	NO	/	2 sprekers?	
+81d8c1dd-240e-4e95-890c-60e79da6aa23	YES	YES	NO	/		
+82caae94-6b1a-4a4f-8643-3827eee25fed	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD Is volgens mij de sissende s	
+8442bea9-8810-4e65-a1ec-20ecfa2786e8	YES	YES	NO	/		Superb
+8b102c8b-afda-422d-88b2-9f5c8f7b3ccb	YES	YES	NO	/		Very good
+8f42a931-7bd1-4536-bec3-a5f24da3c61f	YES	YES	NO	/		good
+8fb4d923-48d0-4704-9c32-235c61227f76	YES	YES	NO	/		good
+9223720f-1a2a-4811-84a1-a421646f63a0	YES	YES	NO	/		Very good
+94025116-4e19-4718-9e4e-c9f5af205b4c	YES	YES	NO	/	Enkele files die duration 0s hebben	Very good
+992fb536-7504-4c58-adaf-bd6498d96dc7	YES	YES	NO	/		Superb
+99d276a0-83fe-4d47-949e-481dc67b2688	YES	YES	NO	/	Leest wel heel snel Maar doet dit ook bij de beschrijvingen en beschrijft voldoende lang	Very good
+9a725424-aafb-4d9b-8be7-acad80a46614	YES	YES	NO	/	Leest heel snel. ook enkele heel korte marloezen	Very good
+9bd9b20c-97aa-4435-a704-149d55c4403a	YES	YES	NO	/	Enkele files die duration 0s hebben	Superb
+9c44a144-8722-4d83-9bc7-f3c1189c5b82	YES	YES	NO	/	Enkele files die duration 0s hebben	Superb
+9d2d8496-3fe6-482b-a022-fb20e7abe442	YES	YES	NO	/		Superb
+9e6970fe-2bd5-426c-b270-5ee386cd561b	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD Is volgens mij de sissende s	good
+a1b0f7d5-eb44-4d1a-85ec-02578d5dc2ae	YES	YES	NO	/	Soms wel wat veel piekjes op de F0 LLD Is volgens mij de sissende s	good
+a2dbee10-fc31-42ec-89f8-9b4e5fa74b7f	YES (if we apply duration filter)	YES	NO	/	Too muchs hort sessions Audio and opensmile features are good however	Very good
+a8fda205-f95f-4b90-b2b1-7b1c59af2f45	YES	YES	NO	/		Very good
+a97f6c96-dc8e-447c-be84-44959f7fa93d	YES	YES	NO	/		good
+aa3636a1-315b-4830-9698-2391882d950d	YES	YES	NO	/		Very good
+aeacc3a4-754e-4cd3-9ce7-62a41147d637	UNSURE	YES	NO	/	Soms veel piekjes op de F0 LLD Is volgens mij de sissende s	okay
+aef8bb4e-230d-42ae-a76a-dc5b37d97ff3	YES	YES	NO	/		Good
+b175704a-f30d-4143-a3b5-5cbd779b7859	YES	YES	NO	/	Wel wat achtergrond geluid, maar opensmile features are good however	okay
+b4e53aa5-3bdc-4451-9cbf-20e94668f86c	YES	YES	NO	/		Very good
+b55d08fb-30f3-499f-8cf4-f0f44321f1a9	YES	YES	NO	/	Soms heel lange stiltes	Very good
+b8b6a8ee-2b45-41e1-9d93-3eacbc25fc34	YES	YES	NO	/		Very good
+b9b76603-d8c1-4ae7-88a0-5563221a13e5	YES	YES	NO	/		Superb
+b9bc06ea-702a-44ba-b7a7-b3f77b405250	YES	YES	NO	/		Very good
+bab663ff-0b70-4dc3-ab87-fe09f2b79959	YES	YES	NO	/	Soms veel piekjes op de F0 LLD Is volgens mij de sissende s / plosieven	Good
+bca36751-bfcb-42a7-bffd-b418e606f1ca	YES	YES	NO	/	Een file die duration 0s hebben De microfoon (gain) voegt iets van licht achtergrondgetuut toe	Very good
+c01ce6ad-27c2-4d41-828a-37f51cc33ba0	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	Very good
+c0f5c29a-86ed-4a03-bbae-6794c5410b9e	YES	YES	NO	/	Redelijk wat achtergrondruis. Maar lijkt de kwaliteit van de opensmile features niet te beinvloeden	okay
+c30db4c2-a62a-4d69-8f1b-893a1f4b8c9d	YES	YES	NO	/		Superb
+c6a3fb30-04d8-470a-907b-6b81cfcdce83	YES	YES	NO	/	Soms wel heel lange stiltes Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	Very good
+ca947b80-e84b-45b6-90ae-9e8cbef7daa6	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	good
+d0b8f0d0-c38d-4594-b97c-ac87cafc21ab	UNSURE	UNSURE	NO	/	Lage audio kwaliteit. Visbokaal geluid. To check with mitchel	okay
+d7fbc4b9-5f94-4639-b82b-6b1592b2ad3a	UNSURE	YES	NO	/	Low quality user data. Sommige files hebben goede kwaliteit, andere veel mindere.  conclusion: manually check each file	okay
+d8b57f62-12ad-4133-8cce-0fccf20d6e72	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	good
+e03516f6-1af7-4c72-ad49-41b6db4733d7	YES	YES	NO	/		Very good
+e0c00b33-2151-4bcf-98b8-82f7701fccea	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	good
+e11aa75e-a74d-463a-957f-f082c85119c4	YES	YES	NO	/		Superb
+e61cd702-cd5f-4258-b4ef-57665e20803c	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	good
+effe47df-0f91-489d-8b7d-547f6fed85dd	YES	YES	NO	/		Superb
+f2ad7300-0c96-4f72-9b84-8913fd54f34c	UNSURE	UNSURE	NO	/	Heel veel achtegrondgeluid. Opensmile + VAD lijkt last te hebben om de features goed te kunnen extraheren. Degene die ge-extraheerd worden, maken wel sense. Geen F0 piekjes bv.	fair
+f40e2f92-1799-429c-a2d7-7f74810253a8	YES	YES	NO	/		Very good
+f46c79e9-7c35-4bd4-b384-078aeae84af7	UNSURE	UNSURE	NO	/	Heel veel achtegrondgeluid. Opensmile + VAD lijkt last te hebben om de features goed te kunnen extraheren. Degene die ge-extraheerd worden, maken wel sense. Geen F0 piekjes bv.	okay
+f57de1ef-fa88-4ebe-85bf-6f2f4ea47079	YES	YES	NO	/		Superb
+f57eb3a1-bc73-4fb8-9c40-8a31a6b67e34	YES	YES	NO	/		Superb
+f88413cc-ace9-4c88-852e-75c59a84e46a	YES	YES	NO	/		Very good
+fb807c80-22cc-4964-81a0-8c732f572004	YES	YES	NO	/	Soms enkele piekjes op de F0 LLD Is volgens mij de sissende s	Superb
