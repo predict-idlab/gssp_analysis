@@ -9,7 +9,7 @@ The `GSSP` is a picture description task that is used to capture (near) spontane
 
 
 In a nutshell the [r-scripts](scripts/) folder performs a thorough statistical analysis of the arousal & valence scores for the audio files.
-The outcome can be observed in a [shiny html file](scripts/1.2_FactorAnalysis.html).
+The outcome can be observed in a [shiny html file](scripts/1.2_FactorAnalysis.pdf).
 All speech data transformation and analysis is performed in the [notebooks](notebooks/README.md) folder.
 
 
