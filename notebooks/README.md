@@ -12,7 +12,5 @@
 | **Speech feature extraction** | |
 | [5_OpenSMILE feature extraction](0.4.1_Process_audio_Parse_Extract_feats.ipynb) |  Perform (fixed duration) feature extraction on the 16kHZ VAD-sliced audio semgents|
 | **Speech analysis** | |
+| [OpenSMile Visualizatio](0.5_OpenSMILE_visualizations.ipynb) |  Visualizes the fixed duration OpenSMILE functional features w.r.t. Speech acquisition task. |
 | [ECAPA-TDNN](0.6_ECPA_TDNN_npy.ipynb) | Extract and projects (using t-SNE) ECAPA-TDNN embeddings from fixed and whole duration utterances.<br><br>A machine learning model is also utilized to assess the speech style seperability of the embeddings.  | 
-
-
-| []()
