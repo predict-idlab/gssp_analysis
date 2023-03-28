@@ -2,7 +2,10 @@
 title: "1.2_FactorAnalysis"
 author: "MKappen"
 date: '2023-03-15'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
