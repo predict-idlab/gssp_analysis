@@ -4,7 +4,7 @@ This repository contains the analysis code for the Ghent Semi-spontaneous Speech
 The `GSSP` is a picture description task that is used to capture (near) spontaneous speech in a controlled setting.
 
 - The data is collected via a [web application](https://github.com/predict-idlab/gssp_web_app) and can be found on [kaggle](https://www.kaggle.com/datasets/jonvdrdo/gssp-web-app-data)
-- The paradigm is described in detail in [this preprint manuscript](TODO).
+- The paradigm is described in detail in [this preprint manuscript](https://psyarxiv.com/e2qxw).
 - The [notebooks](notebooks/README.md) README contains a thorough description of the speech parsing and analysis notebooks.
 
 
