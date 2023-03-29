@@ -12,6 +12,7 @@ In a nutshell the [r-scripts](scripts/) folder performs a thorough statistical a
 The outcome can be observed in a [shiny html file](scripts/1.2_FactorAnalysis.pdf).
 All speech data transformation and analysis is performed in the [notebooks](notebooks/README.md) folder.
 
+The utilized python packages are listed in the [pyproject.toml](pyproject.toml) file and the utilized R packages are listed in the [scripts/r_packages.txt](scripts/r_packages.txt) file.
 
 ---
 ## Folder structure
