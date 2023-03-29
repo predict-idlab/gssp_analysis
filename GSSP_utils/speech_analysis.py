@@ -568,10 +568,14 @@ def analyze_utterance(
     )[0]
     arr_orig_wav_n, fs_orig = torchaudio.load(wav_path_orig, normalize=True)
     arr_orig_wav_n = arr_orig_wav_n.numpy().ravel()
-    print('range', round(arr_orig_wav_n.min(), 2), round(arr_orig_wav_n.max(), 2), round(np.ptp(arr_orig_wav_n), 2))
-    print('range', np.round(np.quantile(arr_orig_wav_n, [0.001, 0.999]), 2))
-    # min_ampl, max_ampl  = np.quantile(arr_orig_wav_n, [0.002, 0.998]), 2)
-
+    # print(
+    #     "range",
+    #     round(arr_orig_wav_n.min(), 2),
+    #     round(arr_orig_wav_n.max(), 2),
+    #     round(np.ptp(arr_orig_wav_n), 2),
+    # )
+    # print("range", np.round(np.quantile(arr_orig_wav_n, [0.001, 0.999]), 2))
+    # # min_ampl, max_ampl  = np.quantile(arr_orig_wav_n, [0.002, 0.998]), 2)
 
     ## THe 16khz, 32 bit float wav path
     wav_path_16khz = list(
@@ -751,7 +755,9 @@ def analyze_utterance(
                 go.Scattergl(name="torch-norm"),  # "opacity": 0.5},
                 hf_y=arr_orig_wav_n_noisy,
                 hf_x=t_arr_orig_n,
-                max_n_samples=10_000 if plot_type in ["png", "return", "plotly"] else 2500,
+                max_n_samples=10_000
+                if plot_type in ["png", "return", "plotly"]
+                else 2500,
                 col=1,
                 row=1,
             )
@@ -876,7 +882,7 @@ def analyze_utterance(
                     yanchor="bottom",
                     y=1.02,
                     xanchor="right",
-                    x=.95,
+                    x=0.95,
                 )
             )
             fr.show_dash(mode="inline", port=8025)

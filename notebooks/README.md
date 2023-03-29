@@ -12,7 +12,7 @@
 | **Speech feature extraction** | |
 | [5_OpenSMILE feature extraction](0.4.1_Process_audio_Parse_Extract_feats.ipynb) |  Perform (fixed duration) feature extraction on the 16kHZ VAD-sliced audio segments |
 | **Speech analysis** | |
-| [OpenSMile Visualization](0.5_OpenSMILE_visualizations.ipynb) |  Visualizes the fixed duration OpenSMILE GeMAPSv01b functional features w.r.t. Speech acquisition task. |
+| [OpenSMile Visualization](0.5.0_OpenSMILE_visualizations.ipynb) |  Visualizes the fixed duration OpenSMILE GeMAPSv01b functional features w.r.t. Speech acquisition task.<br>**Note**: [this notebook](0.5.1_OpenSMILE_visualizations_full_dur.ipynb) contains the visualizations **full utterance duration** OpenSMILE features. |
 | [ECAPA-TDNN](0.6_ECPA_TDNN_npy.ipynb) | Extract and projects (using t-SNE) ECAPA-TDNN embeddings from fixed and whole duration utterances.<br><br>A machine learning model is also utilized to assess the speech style separability of the embeddings.  |
 | **External validation** | |
 | [CGN Parsing](1.1_CGN_EDA_parsing.ipynb) | This notebook parses the [Corpus Gesproken Nederlands](https://ivdnt.org/images/stories/producten/documentatie/cgn_website/doc_English/topics/index.htm) (CGN) its orthographic description and speaker recording. |

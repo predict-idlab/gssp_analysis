@@ -1,11 +1,10 @@
 __author__ = "Jeroen Van Der Donckt"
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-from sklearn.pipeline import Pipeline
-
 from typing import List
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.pipeline import Pipeline
 
 
 def plot_linear_classification_coefs(
