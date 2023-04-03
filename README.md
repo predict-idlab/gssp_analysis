@@ -31,7 +31,7 @@ The utilized python packages are listed in the [pyproject.toml](pyproject.toml) 
 - A preprint manuscript is available on [psyArxiv](https://psyarxiv.com/e2qxw/).
 
 ```bibtex
-@misc{van der donckt_kappen_degraeve_demuynck_vanderhasselt_van hoecke_2023,
+@misc{van_der_donckt_2023,
  title={Ecologically Valid Speech Collection in Behavioral Research: The Ghent Semi-spontaneous Speech Paradigm (GSSP)},
  url={psyarxiv.com/e2qxw},
  DOI={10.31234/osf.io/e2qxw},
